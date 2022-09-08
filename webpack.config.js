@@ -2,6 +2,7 @@ const { resolve } = require('path');
 
 const { HotModuleReplacementPlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -31,6 +32,7 @@ module.exports = {
     },
   },
   plugins: [
+    new ESLintPlugin(),
     new HotModuleReplacementPlugin({}),
     new HtmlWebpackPlugin({
       template: resolve(__dirname, './public/index.html'),
@@ -74,5 +76,5 @@ module.exports = {
         warnings: true,
       },
     },
-  }
+  },
 };

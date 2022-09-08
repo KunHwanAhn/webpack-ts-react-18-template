@@ -7,12 +7,23 @@
   "license": "MIT",
   "scripts": {
     "serve": "NODE_ENV=development webpack serve",
-    "build": "NODE_ENV=production webpack"
+    "build": "NODE_ENV=production webpack",
+    "lint": "eslint --fix './src/**/*.{ts,tsx,js,jsx}'"
   },
   "devDependencies": {
     "@types/node": "^18.7.16",
     "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
+    "eslint": "^8.23.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-react": "^7.31.7",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-webpack-plugin": "^3.2.0",
     "html-webpack-plugin": "^5.5.0",
     "source-map-loader": "^4.0.0",
     "ts-loader": "^9.3.1",
@@ -23,7 +34,6 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.3.0"
+    "react-dom": "^18.2.0"
   }
 }
