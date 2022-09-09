@@ -1,16 +1,12 @@
 import * as React from 'react';
-
-import Hello from '@/components/Hello';
+import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
-    <>
-      <h1>Webpack + TypeScript + React</h1>
-      <Hello
-        complier="TypeScript"
-        framework="React"
-      />
-    </>
+    <div>
+      <h1>TODO with Webpack + TypeScript + React</h1>
+      <Outlet />
+    </div>
   );
 }
 
