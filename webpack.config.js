@@ -12,9 +12,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 
+const MODE_PRODUCTION = 'production';
 const MODE_DEVELOPMENT = 'development';
 
-module.exports = {
+const isProduction = process.env.NODE_ENV === MODE_PRODUCTION;
+
+const config = {
   mode: MODE_DEVELOPMENT,
   target: ['web', 'es2015'],
   entry: resolve(__dirname, './src/main.tsx'),
@@ -70,11 +73,9 @@ module.exports = {
   plugins: [
     new ESLintPlugin(),
     new CaseSensitivePathsPlugin(),
-    new HotModuleReplacementPlugin({}),
-    new CleanWebpackPlugin(),
     new DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(MODE_DEVELOPMENT),
+        NODE_ENV: JSON.stringify(isProduction ? MODE_PRODUCTION : MODE_DEVELOPMENT),
       },
     }),
     new CopyWebpackPlugin({
@@ -101,26 +102,73 @@ module.exports = {
         loader: 'source-map-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.scss$/,
+        use: [
+          isProduction ? { loader: MiniCssExtractPlugin.loader } : 'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              url: false,
+            },
+          },
+          'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              // additionalData: "@import '~@/styles/variables.scss';",
+              // eslint-disable-next-line global-require
+              // implementation: require('sass'),
+            },
+          },
+        ],
+      },
     ],
   },
-  devtool: "source-map",
-  devServer: {
+};
+
+if (isProduction) {
+  config.mode = MODE_PRODUCTION;
+
+  config.plugins = [
+    ...config.plugins,
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'styles/[name].css',
+      chunkFilename: 'styles/[name].css',
+      ignoreOrder: true,
+    }),
+    // new BundleAnalyzerPlugin({
+    //   analyzerMode: 'static',
+    //   openAnalyzer: false,
+    //   generateStatsFile: true,
+    // }),
+  ];
+} else {
+  config.devtool = 'source-map';
+
+  config.plugins = [
+    ...config.plugins,
+    new HotModuleReplacementPlugin({}),
+  ];
+
+  config.devServer = {
     compress: true,
     host: '0.0.0.0',
     port: 8080,
     hot: true,
     liveReload: false,
     historyApiFallback: true,
-    static: [
-      {
-        directory: resolve(__dirname, './assets'),
-      },
-    ],
+    static: {
+      directory: resolve(__dirname, './assets'),
+    },
     client: {
       overlay: {
         errors: true,
-        warnings: true,
+        warnings: false,
       },
     },
-  },
-};
+  };
+}
+
+module.exports = config;
