@@ -1,6 +1,7 @@
 import {
   combineReducers,
   configureStore,
+  createSelector,
 } from '@reduxjs/toolkit';
 
 import {
@@ -20,6 +21,19 @@ const store = configureStore({ reducer });
 export interface StoreState {
   todoState: TodoState;
 }
+
+const selectTodos = createSelector(
+  (state: StoreState) => state.todoState,
+  (todos) => todos,
+);
+
+function selectTodoById(id: number) {
+  return createSelector(
+    (state: StoreState) => state.todoState,
+    (todos) => todos.find((todo) => todo.id === id),
+  );
+}
+
 type StoreDispatch = typeof store.dispatch;
 
 export type {
@@ -30,6 +44,8 @@ export type {
 export {
   addTodo,
   removeTodo,
+  selectTodos,
+  selectTodoById,
 };
 
 export default store;
