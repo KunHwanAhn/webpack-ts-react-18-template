@@ -1,26 +1,14 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { remove } from '@/store';
-import type {
-  Todo as TypeTodo,
-  TodoDispatch,
-} from '@/store';
+import { removeTodo, TypeTodo } from '@/store';
 
-interface TodoProps extends PropsFromRedux, TypeTodo {}
+type TodoProps = TypeTodo;
 
-function mapDispatchToProps(dispatch: TodoDispatch, ownProps: TypeTodo) {
-  return {
-    deleteTodo: () => { dispatch(remove(ownProps.id)); },
-  };
-}
+export default function Todo({ text, id }: TodoProps) {
+  const dispatch = useDispatch();
 
-const connector = connect(null, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function Todo({ text, id, deleteTodo }: TodoProps) {
   return (
     <li>
       <Link to={`/${id}`}>
@@ -28,12 +16,10 @@ function Todo({ text, id, deleteTodo }: TodoProps) {
       </Link>
       <button
         type="button"
-        onClick={deleteTodo}
+        onClick={() => { dispatch(removeTodo(id)); }}
       >
         Delete
       </button>
     </li>
   );
 }
-
-export default connector(Todo);
