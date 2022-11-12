@@ -2,17 +2,17 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
 
-import { remove } from '@/store';
+import { removeTodo } from '@/store';
 import type {
-  Todo as TypeTodo,
-  TodoDispatch,
+  TypeTodo,
+  StoreDispatch,
 } from '@/store';
 
 interface TodoProps extends PropsFromRedux, TypeTodo {}
 
-function mapDispatchToProps(dispatch: TodoDispatch, ownProps: TypeTodo) {
+function mapDispatchToProps(dispatch: StoreDispatch, ownProps: TypeTodo) {
   return {
-    deleteTodo: () => { dispatch(remove(ownProps.id)); },
+    deleteTodo: () => { dispatch(removeTodo(ownProps.id)); },
   };
 }
 

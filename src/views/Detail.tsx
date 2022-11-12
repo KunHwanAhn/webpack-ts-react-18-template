@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import type { TodoState } from '@/store';
+import type { StoreState } from '@/store';
 
 function Detail() {
   const { id } = useParams();
@@ -10,7 +10,7 @@ function Detail() {
   if (!id) {
     throw new Error('No required params, "id"');
   }
-  const currTodo = useSelector((todos: TodoState) => todos.find((todo) => todo.id === parseInt(id, 10)));
+  const currTodo = useSelector((state: StoreState) => state.todoState.find((todo) => todo.id === parseInt(id, 10)));
 
   return (
     <>

@@ -2,21 +2,21 @@ import * as React from 'react';
 import { useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
-import { add } from '@/store';
+import { addTodo as addTodoToStore } from '@/store';
 import type {
-  TodoState as TypeTodoState,
-  Todo as TypeTodo,
-  TodoDispatch,
+  StoreState,
+  TypeTodo,
+  StoreDispatch,
 } from '@/store';
 
 import Todo from '@/components/Todo';
 
-function mapStateToProps(todos: TypeTodoState) {
-  return { todos };
+function mapStateToProps(state: StoreState) {
+  return { todos: state.todoState };
 }
 
-function mapDispatchToProps(dispatch: TodoDispatch) {
-  return { addTodo: (text: TypeTodo['text']) => { dispatch(add(text)); } };
+function mapDispatchToProps(dispatch: StoreDispatch) {
+  return { addTodo: (text: TypeTodo['text']) => { dispatch(addTodoToStore(text)); } };
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

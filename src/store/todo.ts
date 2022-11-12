@@ -1,8 +1,7 @@
 import {
-  configureStore,
   createSlice,
+  PayloadAction,
 } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
 
 export type Todo = {
   text: string;
@@ -24,8 +23,5 @@ const todos = createSlice({
   },
 });
 
-const store = configureStore({ reducer: todos.reducer });
-
-export type TodoDispatch = typeof store.dispatch;
+export const { reducer } = todos;
 export const { add, remove } = todos.actions;
-export default store;
