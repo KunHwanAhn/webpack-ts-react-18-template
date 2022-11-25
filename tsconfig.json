@@ -21,7 +21,11 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
     "sourceMap": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
     "paths": {
       "@/*": ["./src/*"],
     },
