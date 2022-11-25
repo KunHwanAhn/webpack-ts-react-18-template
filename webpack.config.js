@@ -24,8 +24,8 @@ const config = {
   output: {
     path: resolve(__dirname, 'dist'),
     publicPath: '/',
-    filename: 'js/[name].js',
-    chunkFilename: 'js/[name].js',
+    filename: 'js/[name].[contenthash].js',
+    chunkFilename: 'js/[name].[contenthash].js',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -90,7 +90,18 @@ const config = {
       {
         test: /\.(t|j)sx?$/,
         use: {
-          loader: 'ts-loader',
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ['@babel/preset-env', {
+                useBuiltIns: 'usage',
+                corejs: 3,
+                shippedProposals: true,
+              }],
+              '@babel/preset-react',
+              '@babel/preset-typescript',
+            ],
+          },
         },
         exclude: /node_modules/,
       },
@@ -134,8 +145,8 @@ if (isProduction) {
     ...config.plugins,
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: 'styles/[name].css',
-      chunkFilename: 'styles/[name].css',
+      filename: 'styles/[name].[contenthash].css',
+      chunkFilename: 'styles/[name].[contenthash].css',
       ignoreOrder: true,
     }),
     // new BundleAnalyzerPlugin({
